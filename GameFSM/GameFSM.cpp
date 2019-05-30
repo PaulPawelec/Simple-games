@@ -207,7 +207,7 @@ public:
             player->Strengh++;
         }
         else if(choose == 3){
-            if(player->Agility > 5){
+            if(player->Agility > 50){
             	cout << "MAKSYMALNA ILOSC AGILITY!!! ROZDAJ PUNKTY PONOWNIE" << endl;
             	this_thread::sleep_for(chrono::milliseconds(1000));
             	this->King->pushState(bind(&LevelUp, this));
@@ -240,7 +240,8 @@ public:
         int S = los(100, pu * 60);
         S = S/100;
         pu -= S;
-        int H = los(1, pu);
+        int H = los(100, pu * 80);
+        H = H/100;
         pu -= H;
 
         if(pu < 0){
