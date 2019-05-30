@@ -85,7 +85,7 @@ public:
     }
 
     void HP(){
-        cout << "LEVEL: " << player->Lvl << "   HP Gladiatora: " << player->HPnow << "/" << player->MaxHP << endl;
+        cout << "LEVEL: " << player->Lvl << "   HP Gladiatora: " << player->HPnow << "/" << player->MaxHP << "  Strengh: " << player->Strengh << "  Agility: " << player->Agility << "  Healing: " << player->Healing << endl;
         cout << "LEVEL: " << enemy->Lvl << "   HP Przeciwnika: " << enemy->HPnow << "/" << enemy->MaxHP << endl;
     }
 
@@ -184,8 +184,10 @@ public:
 
     void End(){
         this->King->popState();
+        system( "cls" );
         cout << "KONIEC GRY" << endl;
-        cout << "OSIAGNOLES " << player->Lvl << " LEVEL" << endl;
+        cout << "OSIAGNALES " << player->Lvl << " LEVEL" << endl;
+        cout << "HP " << player->MaxHP << "  Strengh: " << player->Strengh << "  Agility: " << player->Agility << "  Healing: " << player->Healing << endl;
         exit(0);
     }
 
@@ -205,7 +207,13 @@ public:
             player->Strengh++;
         }
         else if(choose == 3){
-            player->Agility++;
+            if(player->Agility > 5){
+            	cout << "MAKSYMALNA ILOSC AGILITY!!! ROZDAJ PUNKTY PONOWNIE" << endl;
+            	this_thread::sleep_for(chrono::milliseconds(1000));
+            	this->King->pushState(bind(&LevelUp, this));
+            	return;
+			}
+			player->Agility++;
         }
         else if(choose == 4){
             player->Healing++;
@@ -229,7 +237,7 @@ public:
         int lvl = los(player->Lvl, player->Lvl + 4);
         int pu = lvl + 4;
         int hp = los(1, pu);
-        int S = los(100, pu * 75);
+        int S = los(100, pu * 60);
         S = S/100;
         pu -= S;
         int H = los(1, pu);
@@ -238,9 +246,11 @@ public:
         if(pu < 0){
             pu = 0;
         }
+        
         if(pu > 50){
             pu = 50;
         }
+        
         this->enemy = new Gladiator(lvl, hp * 10, S, pu, H);
         system( "cls" );
         cout << "NOWY PRZECIWNIK" << endl;
